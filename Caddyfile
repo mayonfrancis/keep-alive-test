@@ -1,0 +1,18 @@
+{
+    auto_https disable_redirects
+}
+
+local.example.com {
+    reverse_proxy  {
+        to server:3000
+        # lb_policy round_robin
+    }
+    tls internal
+}
+
+http://local.example.com {
+    reverse_proxy  {
+        to server:3000
+        # lb_policy round_robin
+    }
+}

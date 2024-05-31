@@ -1,0 +1,28 @@
+services:
+  server:
+    build: ./server
+    # ports:
+    #   - "3000:3000"
+    # deploy:
+    #   mode: replicated
+    #   replicas: 5
+    #   endpoint_mode: dnssr
+
+  caddy:
+    image: caddy:2.8.1-alpine
+    hostname: local.example.com
+    depends_on:
+      - server
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+  
+  client:
+    build: ./client
+    depends_on:
+      - caddy
+    environment:
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    
